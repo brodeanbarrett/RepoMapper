@@ -1,10 +1,11 @@
 [build-system]
-requires = ["setuptools>=69.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "repomapper"
+name = "repo-mapper"
 version = "0.1.0"
+description = "Generate a map of a codebase highlighting important files and definitions"
 requires-python = ">=3.13"
 dependencies = [
     "diskcache>=5.6.0",
@@ -17,7 +18,21 @@ dependencies = [
 ]
 
 [project.scripts]
-repomap-mcp = "repomap_server:main"
+repo-mapper = "repomap:main"
 
-[tool.setuptools]
-py-modules = ["repomap_server", "repomap", "repomap_class", "utils", "importance", "scm"]
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/repomap", "src/repomap_class", "src/repomap_server", "src/utils", "src/importance", "src/scm"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]

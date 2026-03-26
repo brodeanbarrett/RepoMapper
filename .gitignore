@@ -1,4 +1,15 @@
+# Python
 .aider*
 .repomap*
-.venv
+.venv/
 __pycache__/
+*.py[cod]
+*$py.class
+
+# UV
+uv.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp

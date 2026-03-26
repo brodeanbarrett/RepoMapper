@@ -24,6 +24,7 @@ RepoMap is a powerful tool designed to help, primarily LLMs, understand and navi
   - [Setup](#setup)
   - [Usage](#usage-1)
 - [Changelog](#changelog)
+
 ----------
 
 ## Aider
@@ -41,7 +42,7 @@ I then used a combination of Aider w/Claude 3.7, Cline w/Gemini 2.5 Pro Preview 
 ## Example Output
 
 ```
-> python repomap.py . --chat-files repomap_class.py
+> repo-mapper . --chat-files repomap_class.py
 Chat files: ['/mnt/programming/RepoMapper/repomap_class.py']
 repomap_class.py:
 (Rank value: 10.8111)
@@ -93,9 +94,25 @@ importance.py:
 
 ## Installation
 
+### UV (Recommended)
+
 ```bash
-pip install -r requirements.txt
+uv tool install git@github.com:brodeanbarrett/RepoMapper.git
 ```
+
+This installs `repo-mapper` globally and makes it available in your PATH.
+
+### Development
+
+```bash
+git clone git@github.com:brodeanbarrett/RepoMapper.git
+cd RepoMapper
+uv sync
+```
+
+### MCP Server
+
+The MCP server is available when installed via `uv tool install`.
 
 ----------
 
@@ -105,34 +122,34 @@ pip install -r requirements.txt
 
 ```bash
 # Map current directory
-python repomap.py .
+repo-mapper .
 
 # Map specific directory with custom token limit
-python repomap.py src/ --map-tokens 2048
+repo-mapper src/ --map-tokens 2048
 
 # Map specific files
-python repomap.py file1.py file2.py
+repo-mapper file1.py file2.py
 
 # Specify chat files (higher priority) vs other files
-python repomap.py --chat-files main.py --other-files src/
+repo-mapper --chat-files main.py --other-files src/
 
 # Specify mentioned files and identifiers
-python repomap.py --mentioned-files config.py --mentioned-idents "main_function"
+repo-mapper --mentioned-files config.py --mentioned-idents "main_function"
 
 # Enable verbose output
-python repomap.py . --verbose
+repo-mapper . --verbose
 
 # Force refresh of caches
-python repomap.py . --force-refresh
+repo-mapper . --force-refresh
 
 # Specify model for token counting
-python repomap.py . --model gpt-3.5-turbo
+repo-mapper . --model gpt-3.5-turbo
 
 # Set maximum context window
-python repomap.py . --max-context-window 8192
+repo-mapper . --max-context-window 8192
 
 # Exclude files with Page Rank 0
-python repomap.py . --exclude-unranked
+repo-mapper . --exclude-unranked
 ```
 
 The tool prioritizes files in the following order:
@@ -145,22 +162,22 @@ The tool prioritizes files in the following order:
 
 ```bash
 # Enable verbose output
-python repomap.py . --verbose
+repo-mapper . --verbose
 
 # Force refresh of caches
-python repomap.py . --force-refresh
+repo-mapper . --force-refresh
 
 # Specify model for token counting
-python repomap.py . --model gpt-3.5-turbo
+repo-mapper . --model gpt-3.5-turbo
 
 # Set maximum context window
-python repomap.py . --max-context-window 8192
+repo-mapper . --max-context-window 8192
 
 # Exclude files with Page Rank 0
-python repomap.py . --exclude-unranked
+repo-mapper . --exclude-unranked
 
 # Mention specific files or identifiers for higher priority
-python repomap.py . --mentioned-files config.py --mentioned-idents "main_function"
+repo-mapper . --mentioned-files config.py --mentioned-idents "main_function"
 ```
 
 ----------
@@ -271,28 +288,17 @@ RepoMap can also be run as an MCP (Model Context Protocol) server, allowing othe
       "disabled": false,
       "timeout": 60,
       "type": "stdio",
-      "command": "/usr/bin/python3",
-      "args": [
-        "/absolute/path/to/repomap_server.py"
-      ]
+      "command": "repo-mapper",
+      "args": ["--mcp"]
     }
   }
 }
 ```
 
-- Replace `"/absolute/path/to/repomap_server.py"` with the actual path to your `repomap_server.py` file.
-
 ### Usage
 
-1. Run the `repomap_server.py` script:
-
-```bash
-python repomap_server.py
-```
-
-2. The server will start and listen for requests via STDIO.
-3. Other applications can then use the `repo_map` tool provided by the server to generate repository maps. They must specify the `project_root` parameter as an absolute path to the project they want to map.
-
+1. The MCP server is included when installing via `uv tool install`.
+2. Other applications can then use the `repo_map` tool provided by the server to generate repository maps. They must specify the `project_root` parameter as an absolute path to the project they want to map.
 
 ## Changelog
 
