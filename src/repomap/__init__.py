@@ -197,13 +197,15 @@ Examples:
     
     # Generate the map
     try:
-        map_content = repo_map.get_repo_map(
+        map_result = repo_map.get_repo_map(
             chat_files=chat_files,
             other_files=other_files,
             mentioned_fnames=mentioned_fnames,
             mentioned_idents=mentioned_idents,
             force_refresh=args.force_refresh
         )
+        
+        map_content, file_report = map_result
         
         if map_content:
             if args.verbose:
